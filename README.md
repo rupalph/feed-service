@@ -7,8 +7,15 @@ Currently uses in memory database using hashmap
 1. Call Login-Service, obtain Security token.
 2. Call Feed-Service with userid, and above security token.
 
-## Examples
-FeedService(HTTP-GET):
+
+<b>FeedService Resource URI</b>
+http://localhost:8080/FeedService/api/feed/{userid}
+Parameters
+authToken (Required)
+Response
+Json
+
+<b>Example</b>
 http://localhost:8080/FeedService/api/feed/{userid}?authToken=[Random Token]
 <pre>
 {
@@ -32,8 +39,10 @@ http://localhost:8080/FeedService/api/feed/{userid}?authToken=[Random Token]
 }</pre>
 
 
-Login-Service (To get auth-token):
-Http GET: http://localhost:8080/FeedService/api/login/{userid}
+<b>Login-Service Resource URI</b>
+http://localhost:8080/FeedService/api/login/{userid}
+
+Response
 <pre>[Random Token]</pre>
 
 
