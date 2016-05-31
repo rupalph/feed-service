@@ -8,12 +8,12 @@ Currently uses in memory database using hashmap
 2. Call Feed-Service with userid, and above security token.
 
 
-<b>FeedService Resource URI</b>
-http://localhost:8080/FeedService/api/feed/{userid}
-Parameters
-authToken (Required)
-Response
-Json
+<b>FeedService Resource URI</b><br>
+http://localhost:8080/FeedService/api/feed/{userid}<br>
+Parameters<br>
+authToken (Required)<br>
+Response<br>
+Json<br>
 
 <b>Example</b>
 http://localhost:8080/FeedService/api/feed/{userid}?authToken=[Random Token]
@@ -39,10 +39,10 @@ http://localhost:8080/FeedService/api/feed/{userid}?authToken=[Random Token]
 }</pre>
 
 
-<b>Login-Service Resource URI</b>
-http://localhost:8080/FeedService/api/login/{userid}
+<b>Login-Service Resource URI</b><br>
+http://localhost:8080/FeedService/api/login/{userid}<br>
 
-Response
+Response<br>
 <pre>[Random Token]</pre>
 
 
