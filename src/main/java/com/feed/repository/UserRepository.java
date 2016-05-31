@@ -2,7 +2,7 @@ package com.feed.repository;
 
 
 import com.feed.modal.User;
-import com.feed.util.TweetDAO;
+import com.feed.util.DBUtil;
 
 public class UserRepository {
 
@@ -12,7 +12,7 @@ public class UserRepository {
 	 * @return
 	 */
 	public static User findUserById(String userid) {
-		return TweetDAO.findUserById(userid);
+		return DBUtil.findUserById(userid);
 	}
 
 }

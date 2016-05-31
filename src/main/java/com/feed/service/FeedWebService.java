@@ -18,40 +18,26 @@ import com.feed.util.LoginMockHelper;
 @Path("/feed")
 public class FeedWebService {
 
-	@GET
-	@Path("/test/{param}")
-	public Response getMsg(@PathParam("param") String msg) {
-
-		String output = "Jersey say : " + msg;
-
-		return Response.status(200).entity(output).build();
-
-	}
 
 	/**
-	 * Login service - mock
-	 * User  - follow - many users 
-	 * 100 recent tweets from their immediate connections
+	 * User Logs-in using LDAP
+	 * For Demo, using LoginService - Sets a random token, which user can use to get list of feeds.
 	 * 
-	 * logged in user
-	 * user id
-	 * users he/she following
-	 * each user tweets
+	 * Resource: Tweet { Userid,message, timestamp }
 	 * 
-	 * lookup 100 most recent tweets from list of n users
+	 * Resource URI
+	 * http://localhost:8080/FeedService/api/feed/{userid}
 	 * 
-	 * Tweet class - tweetid, userid, timestamp, message, createdByUser
+	 * Response: 
+	 * Content/type:Json
+	 * {userid:<userid>, message:<message>, time:<timestamp>}
 	 * 
-	 * first look up users current user is following
-	 * list each users most recent 100 tweets
-	 * sort all of the tweets
-	 * find top 100
 	 * 
 	 */
 	@GET
-	@Path("/{param}")
+	@Path("/{userid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response findRecentTweets(@PathParam("param") String userid,@QueryParam("authToken") int token)
+	public Response findRecentTweets(@PathParam("userid") String userid,@QueryParam("authToken") int token)
 	{
 		//check if the user is logged in
 		if(LoginMockHelper.isUserLoggedIn(userid, token)) {
@@ -65,15 +51,26 @@ public class FeedWebService {
 			return Response.status(401).build();
 	}
 
+	/** 
+	 * User can post a tweet using this call
+	 * @param tweet
+	 * @return
+	 */
 	@POST
-	@Path("/post")
+	@Path("/{userid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response postTweet(TweetDto tweet) {
+	public Response postTweet(@PathParam("userid") String userid,@QueryParam("authToken") int token,TweetDto tweet) {
 
-		String result = "Tweet saved : " + tweet;
-		TweetRepository.save(tweet);
-		return Response.status(201).entity(result).build();
+		//check if the user is logged in
+		if(LoginMockHelper.isUserLoggedIn(userid, token)) {
+			//if yes, continue, else return
 
+			String result = "Tweet saved : " + tweet.getUserid() + ","+ tweet.getMessage();
+			TweetRepository.save(tweet);
+			return Response.status(201).entity(result).build();
+		}
+		else
+			return Response.status(401).build();
 	}
 
 }

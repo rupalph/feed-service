@@ -9,7 +9,7 @@ import java.util.List;
 import com.feed.dto.TweetDto;
 import com.feed.modal.Tweet;
 import com.feed.modal.User;
-import com.feed.util.TweetDAO;
+import com.feed.util.DBUtil;
 
 public class TweetRepository {
 
@@ -20,7 +20,7 @@ public class TweetRepository {
 	 * @return
 	 */
 	public static List<TweetDto> fetchTweets(String userid) {
-		List<Tweet> tweets= TweetDAO.getRecentTweets(userid);
+		List<Tweet> tweets= DBUtil.getRecentTweets(userid);
 		System.out.println("TweetRepository:"+tweets);
 		List<TweetDto> result=new ArrayList<TweetDto>();
 		SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
@@ -48,7 +48,7 @@ public class TweetRepository {
 				createdByUser(e.getUserid()).
 				timestamp(Calendar.getInstance().getTimeInMillis()).build();
 		
-		TweetDAO.saveTweet(tweet);
+		DBUtil.saveTweet(tweet);
 
 		User user =UserRepository.findUserById(e.getUserid());
 		if(user!=null) {
@@ -61,12 +61,12 @@ public class TweetRepository {
 						timestamp(tweet.getTimestamp()).
 						role("Follower")
 						.build();
-				TweetDAO.saveTweet(newTweet);
+				DBUtil.saveTweet(newTweet);
 
 			}
 		}
 		else
-			TweetDAO.addUser(e.getUserid());
+			DBUtil.addUser(e.getUserid());
 	}
 	
 	

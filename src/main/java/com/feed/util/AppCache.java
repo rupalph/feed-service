@@ -1,22 +1,43 @@
 package com.feed.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import com.feed.modal.Tweet;
 
 public class AppCache {
-	private static final int DEFAULT_CACHE_SIZE = 3;
+	private static int DEFAULT_CACHE_SIZE=3;
 	private static ConcurrentMap<String,TweetCache> appCache=new ConcurrentHashMap<String, TweetCache>();
 
-	/**
-	 * Gets recent tweets from cache
-	 * 
-	 * @param userid
-	 * @return
-	 */
+	static {
+		init();
+	}
+	public synchronized static void init()
+	{
+	
+	    InputStream in = 
+	    		Thread.currentThread().getContextClassLoader().getResourceAsStream("app.properties");
+		
+		 Properties p = new Properties();
+		 //System.out.println(Thread.currentThread().getContextClassLoader());
+	     try {
+			p.load(in);
+			String cacheSizeStr=p.getProperty("cache.size");
+			if(cacheSizeStr !=null ) {
+				int cacheSize = Integer.parseInt(cacheSizeStr);
+				DEFAULT_CACHE_SIZE = cacheSize;
+				System.out.println("Setting up default cache-size"+cacheSize);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 
 	/**
@@ -55,7 +76,7 @@ public class AppCache {
 	 * @return
 	 */
 	public static List<Tweet> getTweets(String userid) {
-		List<Tweet> result=new ArrayList<>();
+		List<Tweet> result=new ArrayList<Tweet>();
 		if(appCache.get(userid)!=null)
 			result= appCache.get(userid).getTweets();
 		return result;

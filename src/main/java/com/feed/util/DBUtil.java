@@ -14,7 +14,7 @@ import com.feed.modal.User;
  * @author rupalph
  *
  */
-public class TweetDAO {
+public class DBUtil {
 
 	private static final int DEFAULT_CACHE_SIZE=3;
 	//simulates in-memory db
@@ -33,11 +33,11 @@ public class TweetDAO {
 		User u5=new User("1004");
 		u1.addFollower(u2);
 		u1.addFollower(u3);
-		u2.addFollower(u1);
-		u4.addFollower(u1);
-		u5.addFollower(u3);
-		u3.addFollower(u1);
-		u3.addFollower(u2);
+		u2.addFollower(u4);
+		u4.addFollower(u3);
+		//u5.addFollower(u3);
+		u3.addFollower(u4);
+		u3.addFollower(u5);
 		allUsers.put("1000", u1);
 		allUsers.put("1001", u2);
 		allUsers.put("1002", u3);

@@ -8,7 +8,7 @@ import com.feed.dto.TweetDto;
 import com.feed.modal.User;
 import com.feed.repository.TweetRepository;
 import com.feed.repository.UserRepository;
-import com.feed.util.TweetDAO;
+import com.feed.util.DBUtil;
 
 public class RepositoryTests {
 
@@ -31,8 +31,8 @@ public class RepositoryTests {
 	@Test
 	public void testUserRepository()
 	{
-		TweetDAO.addUser("100");
-		TweetDAO.addFollower("100", "101");
+		DBUtil.addUser("100");
+		DBUtil.addFollower("100", "101");
 		User u=UserRepository.findUserById("100");
 		assertEquals("100",u.getUserid());
 		System.out.println(u.getFollowers());

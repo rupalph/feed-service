@@ -1,14 +1,13 @@
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.junit.Test;
 
 import com.feed.modal.Tweet;
 import com.feed.util.AppCache;
-import com.feed.util.TweetDAO;
+import com.feed.util.DBUtil;
 
 public class AppCacheTest {
 	
@@ -60,9 +59,9 @@ public class AppCacheTest {
 		AppCache.clear();
 		Tweet t1=new Tweet.TweetBuilder("1001", "test").timestamp(40000L).build();
 		//saving in db only
-		TweetDAO.resetDb();
-		TweetDAO.saveTweet(t1);
-		List<Tweet> tweets=TweetDAO.getRecentTweetsFromDB("1001");
+		DBUtil.resetDb();
+		DBUtil.saveTweet(t1);
+		List<Tweet> tweets=DBUtil.getRecentTweetsFromDB("1001");
 		assertEquals(1,tweets.size());
 		Tweet t=tweets.get(0);
 		assertEquals(t.getUserid(),"1001");
