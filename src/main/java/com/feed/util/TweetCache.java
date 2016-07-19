@@ -42,12 +42,12 @@ public class TweetCache {
 			Tweet head=cache.peek();
 			if(e.compareTo(head)>0) {
 				cache.poll();
-				cache.add(e);
+				cache.offer(e);
 			}
 			
 		}
 		else
-			cache.add(e);
+			cache.offer(e);
 	}
 
 
@@ -64,6 +64,15 @@ public class TweetCache {
 	@Override
 	public String toString() {
 		return "cache:"+cache.toString();
+	}
+
+
+	public void addAll(List<Tweet> list) {
+		for(Tweet t:list)
+		{
+			add(t);
+		}
+		
 	}
 
 }

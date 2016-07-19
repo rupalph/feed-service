@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 import com.feed.modal.Tweet;
 
 public class AppCache {
-	private static int DEFAULT_CACHE_SIZE=3;
+	public static int DEFAULT_CACHE_SIZE=3;
 	private static ConcurrentMap<String,TweetCache> appCache=new ConcurrentHashMap<String, TweetCache>();
 
 	static {
@@ -47,17 +47,16 @@ public class AppCache {
 	 * @param tweets
 	 * @return
 	 */
-	public static List<Tweet> addToCache(String userid,List<Tweet> tweets)
+	public static void addToCache(String userid,List<Tweet> tweets)
 	{
-		TweetCache tc=getUserTweetCache(userid);
-		
-		for(Tweet e:tweets)
-		{
-			
-			tc.add(e);
+		synchronized(userid) {
+			TweetCache tc=getUserTweetCache(userid);
+			for(Tweet e:tweets)
+			{
+				tc.add(e);
+			}
+			appCache.put(userid,tc);
 		}
-		appCache.put(userid,tc);
-		return tc.getTweets();
 	}
 
 	/**
@@ -89,9 +88,11 @@ public class AppCache {
 	 * @param tweet
 	 */
 	public static void addToCache(String userid, Tweet tweet) {
-		TweetCache tc=getUserTweetCache(userid);
-		tc.add(tweet);
-		appCache.put(userid,tc);
+		synchronized(userid){
+			TweetCache tc=getUserTweetCache(userid);
+			tc.add(tweet);
+			appCache.put(userid,tc);
+		}
 	}
 
 	/**

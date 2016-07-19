@@ -15,17 +15,19 @@ public class RepositoryTests {
 	@Test
 	public void testTweetRepository1()
 	{
+		UserRepository.addUser("100");
+		
 		TweetDto e = new TweetDto();
 		e.setMessage("test");
-		e.setUserid("100");
+		e.setUserid("1000");
 		//e.setTimestamp("2016-05-20 18:00:00");
 		TweetRepository.save(e);
-		List<TweetDto> tweets=TweetRepository.fetchTweets("100");
+		List<TweetDto> tweets=TweetRepository.fetchTweets("1000");
 		System.out.println(tweets);
-		assertTrue(tweets.size()==1);
+		assertTrue(tweets.size()==4);
 		TweetDto t=tweets.get(0);
 		assertEquals(t.getMessage(),"test");
-		assertEquals(t.getUserid(),"100");
+		assertEquals(t.getUserid(),"1000");
 	}
 
 	@Test

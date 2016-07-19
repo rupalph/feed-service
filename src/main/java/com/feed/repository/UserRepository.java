@@ -14,5 +14,12 @@ public class UserRepository {
 	public static User findUserById(String userid) {
 		return DBUtil.findUserById(userid);
 	}
+	
+	
+
+	public static void addUser(String userid) {
+		DBUtil.addUser(userid);
+		
+	}
 
 }

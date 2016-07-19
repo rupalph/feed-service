@@ -9,6 +9,7 @@ import java.util.List;
 import com.feed.dto.TweetDto;
 import com.feed.modal.Tweet;
 import com.feed.modal.User;
+import com.feed.util.AppCache;
 import com.feed.util.DBUtil;
 
 public class TweetRepository {
@@ -20,7 +21,7 @@ public class TweetRepository {
 	 * @return
 	 */
 	public static List<TweetDto> fetchTweets(String userid) {
-		List<Tweet> tweets= DBUtil.getRecentTweets(userid);
+		List<Tweet> tweets= getRecentTweets(userid);
 		System.out.println("TweetRepository:"+tweets);
 		List<TweetDto> result=new ArrayList<TweetDto>();
 		SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
@@ -39,6 +40,20 @@ public class TweetRepository {
 	}
 
 	/**
+	 * Get recent tweets of the users (traverse the friends graph and fetch recent tweets)
+	 * 
+	 * @param userid
+	 * @return
+	 */
+	public static List<Tweet> getRecentTweets(String userid)
+	{
+		System.out.println("TweetDAO:getRecentTweets");
+		List<Tweet> list = new ArrayList<Tweet>();
+		list = DBUtil.getRecentTweetsFromFriends(userid);
+		System.out.println("TweetDAO getRecentTWeets:"+list);
+		return list;
+	}
+	/**
 	 * Saves the tweet
 	 * @param e
 	 */
@@ -49,24 +64,6 @@ public class TweetRepository {
 				timestamp(Calendar.getInstance().getTimeInMillis()).build();
 		
 		DBUtil.saveTweet(tweet);
-
-		User user =UserRepository.findUserById(e.getUserid());
-		if(user!=null) {
-			List<User> followers=user.getFollowers();
-
-			for(User u:followers)
-			{
-				Tweet newTweet=new Tweet.TweetBuilder(u.getUserid(), tweet.getMessage()).
-						createdByUser(tweet.getUserid()).
-						timestamp(tweet.getTimestamp()).
-						role("Follower")
-						.build();
-				DBUtil.saveTweet(newTweet);
-
-			}
-		}
-		else
-			DBUtil.addUser(e.getUserid());
 	}
 	
 	

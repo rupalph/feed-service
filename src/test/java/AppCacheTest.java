@@ -34,8 +34,8 @@ public class AppCacheTest {
 		AppCache.addToCache("1000", t4);
 		tweets=
 				AppCache.getTweets("1000");
-		System.out.println(tweets);
-		assertFalse(tweets.contains(t1));
+		System.out.println("Test:"+tweets);
+		assertTrue(tweets.contains(t1));
 	}
 
 	@Test

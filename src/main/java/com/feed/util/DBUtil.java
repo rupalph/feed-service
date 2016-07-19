@@ -16,7 +16,6 @@ import com.feed.modal.User;
  */
 public class DBUtil {
 
-	private static final int DEFAULT_CACHE_SIZE=3;
 	//simulates in-memory db
 	private static ConcurrentMap<String,List<Tweet>> myDb=new ConcurrentHashMap<String, List<Tweet>>();
 	
@@ -88,33 +87,13 @@ public class DBUtil {
 			
 
 		}
-		AppCache.addToCache(userid, tweet);
+		
 		//debug
 		//System.out.println("cache"+cache.toString());
 		System.out.println("db:"+myDb.toString());
 	}
 	
-	/**
-	 * Get recent tweets
-	 * 
-	 * @param userid
-	 * @return
-	 */
-	public static List<Tweet> getRecentTweets(String userid)
-	{
-		
-		
-		System.out.println("TweetDAO:getRecentTweets");
-		List<Tweet> list = new ArrayList<Tweet>();
-		if(AppCache.hasUserId(userid))
-			list = AppCache.getTweets(userid);
-		else {
-			list = getRecentTweetsFromDB(userid);
-			list = AppCache.addToCache(userid,list);
-		}
-		System.out.println("TweetDAO getRecentTWeets:"+list);
-		return list;
-	}
+	
 	/**
 	 * Fetches recent tweets from cache
 	 * 
@@ -131,6 +110,29 @@ public class DBUtil {
 		return list;
 	}
 
+	/**
+	 * Fetches recent tweets from db by traversing all tweets from friends and fetching top N tweets
+	 * 
+	 * @param userid
+	 * @return
+	 */
+	public static List<Tweet> getRecentTweetsFromFriends(String userid)
+	{
+		//System.out.println(cache.toString());
+		TweetCache cache = new TweetCache(AppCache.DEFAULT_CACHE_SIZE);
+		//List<Tweet> list=new ArrayList<Tweet>();
+		User user = findUserById(userid);
+		System.out.println("Debug DBUtil:"+user);
+		if(myDb.get(userid)!=null)
+			cache.addAll(myDb.get(userid));
+		for(User friend:user.getFollowers())
+		{
+			if(myDb.get(friend.getUserid())!=null)
+					cache.addAll(myDb.get(friend.getUserid()));
+		}
+		System.out.println("TweetDAO getRecentTWeetsFromDB:"+cache.getTweets());
+		return cache.getTweets();
+	}
 	/**
 	 * Finds user by userid
 	 * @param userid

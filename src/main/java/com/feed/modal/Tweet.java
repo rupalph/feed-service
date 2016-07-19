@@ -61,10 +61,10 @@ public class Tweet implements Comparable<Tweet>{
 	public void setCreatedByUser(String createdByUser) {
 		this.createdByUser = createdByUser;
 	}
-
+	//10 am, 12pm. 12>10. 10-12 (-2)
 	public int compareTo(Tweet o) {
 		//System.out.println("compareTo:"+ timestamp + o.getTimestamp());
-		return (int) (this.timestamp - o.getTimestamp());
+		return (int) (o.getTimestamp() - this.timestamp);
 	}
 
 	public static class TweetBuilder{

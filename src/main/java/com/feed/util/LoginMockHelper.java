@@ -9,9 +9,8 @@ public class LoginMockHelper {
 	private static int counter=0;
 	private static boolean isInit =false;
 
-	private static void init()
-	{
-		if(!isInit) {
+	static {
+		//if(!isInit) {
 			Random randomGenerator = new Random();
 			for (int idx = 0; idx < 10; ++idx){
 				int randomInt = randomGenerator.nextInt(1000000);
@@ -21,15 +20,15 @@ public class LoginMockHelper {
 			}
 
 
-			isInit=true;
-		}
+			//isInit=true;
+		//}
 	}
 
 	private static ConcurrentMap<String,Integer> loginMap=new ConcurrentHashMap<String,Integer>();
 
 	public static int  userLogin(String userid)
 	{
-		init();
+		//init();
 		if(counter>=10) counter=0;
 		int token=tokens[counter++];
 		loginMap.put(userid, token);
@@ -38,8 +37,12 @@ public class LoginMockHelper {
 
 	public static boolean isUserLoggedIn(String userid, int token)
 	{
-		if(loginMap.containsKey(userid) && token==loginMap.get(userid))
-			return true;
+		System.out.println("TokenService:"+loginMap);
+		if(loginMap.containsKey(userid))
+		{
+			int tkValue=loginMap.get(userid);
+			return tkValue == token ? true:false;
+		}
 		return false;
 
 	}
