@@ -1,7 +1,7 @@
 # FeedService
 
 Restful Services to retrieve User Feeds (tweets). Feed service will return upto 100 most recent tweets for a logged in user.
-Currently uses in memory database using hashmap 
+Currently uses in memory database using hashmap.
 
 ## Usage
 1. Call Login-Service, obtain Security token.
